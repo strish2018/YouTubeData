@@ -54,6 +54,7 @@ public class ListFragment extends Fragment {
         mRecyclerView = v.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        updateVideosInfo();
         updateUI();
         return v;
     }
@@ -82,8 +83,8 @@ public class ListFragment extends Fragment {
         dialog.show(getActivity().getSupportFragmentManager(), "dialog");
     }
 
-    private void checkVideoData(String s){
-        new LongOperation(s).execute();
+    private void checkVideoData(String s, VideoItem v){
+        new LongOperation(s, v).execute();
     }
 
     @Override
@@ -94,7 +95,18 @@ public class ListFragment extends Fragment {
 
         if(requestCode == DIALOG_REQUEST_CODE){
             String link = data.getStringExtra(VideoDialog.LINK);
-            checkVideoData(link);
+            checkVideoData(link, null);
+        }
+    }
+
+    private void updateVideosInfo(){
+        List<VideoItem> videos = mDataLab.getVideos();
+        if(videos.size() > 0){
+            for (int i = 0; i < videos.size(); i++){
+                Log.i("DEBUG", videos.get(i).getTitle());
+                Log.i("DEBUG", videos.get(i).getLink() + "   LINK");
+                checkVideoData(videos.get(i).getLink(), videos.get(i));
+            }
         }
     }
 
@@ -131,7 +143,7 @@ public class ListFragment extends Fragment {
             mVideoItem = video;
             Picasso.get().load(mVideoItem.getThumbnailUrl()).fit().centerCrop().into(mImageView);
             mTitleTextView.setText(mVideoItem.getTitle());
-            mLikesTextView.setText("Likes count: " +String.valueOf(mVideoItem.getGoal()));
+            mLikesTextView.setText("Likes count: " +String.valueOf(mVideoItem.getLikesCount()));
         }
 
         @Override
@@ -144,7 +156,6 @@ public class ListFragment extends Fragment {
 
         public VideoAdapter(List<VideoItem> videos) {
             mVideos = videos;
-            Log.i("DEBUG", mVideos.size() + "  SIZE");
         }
 
         @Override
@@ -173,9 +184,11 @@ public class ListFragment extends Fragment {
     private class LongOperation extends AsyncTask<Void, Void, VideoItem> {
 
         String mString;
+        VideoItem mItem;
 
-        public LongOperation(String s){
+        public LongOperation(String s, VideoItem item){
             mString = s;
+            mItem = item;
         }
 
         @Override
@@ -190,10 +203,16 @@ public class ListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(VideoItem videoItem) {
-            mDataLab.addVideo(videoItem);
-            mAdapter.notifyItemInserted(mDataLab.getVideos().size() - 1);
-            updateUI();
-            Log.i("DEBUG", videoItem.getTitle() + "     " + videoItem.getLikesCount());
+            if(mItem == null){
+                mDataLab.addVideo(videoItem);
+                mAdapter.notifyItemInserted(mDataLab.getVideos().size() - 1);
+                updateUI();
+            } else{
+                mItem.updateItem(videoItem);
+                mDataLab.updateVideo(mItem);
+                updateUI();
+            }
+//            Log.i("DEBUG", videoItem.getTitle() + "     " + videoItem.getLikesCount());
         }
     }
 

@@ -50,6 +50,12 @@ public class DataLab {
         mDatabase.insert(VideoEntry.TABLE_NAME, null, values);
     }
 
+    public void updateVideo(VideoItem v){
+        long id = v.getId();
+        ContentValues values = getContentValues(v);
+        mDatabase.update(VideoEntry.TABLE_NAME, values, VideoEntry._ID + " = ?", new String[] {String.valueOf(id)});
+    }
+
     private static ContentValues getContentValues(VideoItem video) {
         ContentValues values = new ContentValues();
         values.put(VideoEntry.COLUMN_LINK, video.getLink());

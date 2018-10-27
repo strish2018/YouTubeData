@@ -17,7 +17,7 @@ public class VideoCursorWrapper extends CursorWrapper {
         String title = getString(getColumnIndex(VideoEntry.COLUMN_TITLE));
         String link = getString(getColumnIndex(VideoEntry.COLUMN_LINK));
         int likesCount = getInt(getColumnIndex(VideoEntry.COLUMN_LIKES));
-        int goal = getInt(getColumnIndex(VideoEntry.COLUMN_LIKES));
+        int goal = getInt(getColumnIndex(VideoEntry.COLUMN_GOAL));
         long id = getLong(getColumnIndex(VideoEntry._ID));
         String thumbnailUrl = getString(getColumnIndex(VideoEntry.COLUMN_THUMBNAIL));
 

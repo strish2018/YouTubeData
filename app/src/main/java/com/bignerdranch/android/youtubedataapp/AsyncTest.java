@@ -44,10 +44,9 @@ public class AsyncTest {
     }
 
     public VideoItem getVideoByLink(String s) throws IOException {
-        String id = getIdFromUrl(videoUrl);
+        String id = getIdFromUrl(s);
         String queryStats = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id="+id+"&key="+API_KEY;
         String queryInfo = "https://www.googleapis.com/youtube/v3/videos?part=snippet&id="+id+"&key="+API_KEY;
-        Log.i("DEBUG", getUrlString(queryInfo));
         VideoItem videoItem = new VideoItem(s);
         videoItem.setGoal(0);
         try {
@@ -59,12 +58,13 @@ public class AsyncTest {
             e.printStackTrace();
         }
 
+        //videoItem.setLikesCount(videoItem.getLikesCount() - 10);
+
         return videoItem;
     }
 
     private String getIdFromUrl(String s){
         String link = s;
-        Log.i("DEBUG", link.substring(link.lastIndexOf("v=") + 2));
         return link.substring(link.lastIndexOf("v=") + 2);
     }
 
@@ -80,7 +80,7 @@ public class AsyncTest {
         item.setTitle(videoJsonObject.getString("title"));
         videoJsonObject = videoJsonObject.getJSONObject("thumbnails").getJSONObject("high");
         item.setThumbnailUrl(videoJsonObject.getString("url"));
-        Log.i("DEBUG", item.getThumbnailUrl());
+//        Log.i("DEBUG", item.getThumbnailUrl());
     }
 
 }

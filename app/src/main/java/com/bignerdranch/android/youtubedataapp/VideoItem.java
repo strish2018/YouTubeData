@@ -56,4 +56,10 @@ public class VideoItem {
     public void setId(long id) {
         mId = id;
     }
+
+    public void updateItem(VideoItem newItem){
+        mLikesCount = newItem.getLikesCount();
+        mTitle = newItem.getTitle();
+        mThumbnailUrl = newItem.getThumbnailUrl();
+    }
 }
