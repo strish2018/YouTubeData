@@ -105,6 +105,7 @@ public class ListFragment extends Fragment {
 
     private void openDeleteDialog(long id, int pos){
         DeleteDialog dialog = DeleteDialog.newInstance(id, pos);
+        dialog.setCancelable(false);
         dialog.setTargetFragment(this, DELETE_DIALOG_REQUEST_CODE);
         dialog.show(getActivity().getSupportFragmentManager(), "dialog");
     }

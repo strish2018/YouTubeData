@@ -17,6 +17,7 @@ public class AsyncTest {
 
     public static final String API_KEY = "AIzaSyDNOu8gOihV-AHN28qniLqp7YQ9UTvoTz0";
     String videoUrl = "https://www.youtube.com/watch?v=YHo8jMVvQVo&t=891s";
+    String video2 = "https://www.youtube.com/watch?v=HeZtOmiJGOQ";
 
     public byte[] getUrlBytes(String urlSpec) throws IOException {
         URL url = new URL(urlSpec);
