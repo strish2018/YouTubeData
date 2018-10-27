@@ -56,6 +56,7 @@ public class AsyncTest {
             parseItemTitle(videoItem, jsonBody);
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
 
         //videoItem.setLikesCount(videoItem.getLikesCount() - 10);

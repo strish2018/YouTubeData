@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -26,7 +28,8 @@ import java.util.List;
 
 public class ListFragment extends Fragment {
 
-    public static final int DIALOG_REQUEST_CODE = 0;
+    public static final int CHECK_DIALOG_REQUEST_CODE = 0;
+    public static final int DELETE_DIALOG_REQUEST_CODE = 1;
 
     private RecyclerView mRecyclerView;
     private VideoAdapter mAdapter;
@@ -54,6 +57,20 @@ public class ListFragment extends Fragment {
         mRecyclerView = v.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                openDeleteDialog((long) viewHolder.itemView.getTag(), viewHolder.getAdapterPosition());
+                //mAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
+            }
+        }).attachToRecyclerView(mRecyclerView);
+
         updateVideosInfo();
         updateUI();
         return v;
@@ -71,15 +88,24 @@ public class ListFragment extends Fragment {
             case R.id.menu_item_new_video:
                 openDialog();
                 return true;
+            case R.id.menu_item_update:
+                updateVideosInfo();
+                updateUI();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
     private void openDialog(){
-        Log.i("CHECK", "check");
         VideoDialog dialog = VideoDialog.newInstance();
-        dialog.setTargetFragment(this, DIALOG_REQUEST_CODE);
+        dialog.setTargetFragment(this, CHECK_DIALOG_REQUEST_CODE);
+        dialog.show(getActivity().getSupportFragmentManager(), "dialog");
+    }
+
+    private void openDeleteDialog(long id, int pos){
+        DeleteDialog dialog = DeleteDialog.newInstance(id, pos);
+        dialog.setTargetFragment(this, DELETE_DIALOG_REQUEST_CODE);
         dialog.show(getActivity().getSupportFragmentManager(), "dialog");
     }
 
@@ -89,13 +115,23 @@ public class ListFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        updateUI();
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
 
-        if(requestCode == DIALOG_REQUEST_CODE){
+        if(requestCode == CHECK_DIALOG_REQUEST_CODE){
             String link = data.getStringExtra(VideoDialog.LINK);
             checkVideoData(link, null);
+        } else if(requestCode == DELETE_DIALOG_REQUEST_CODE){
+            boolean delete = data.getBooleanExtra(DeleteDialog.DELETE, false);
+            if(delete){
+                long id = data.getLongExtra(DeleteDialog.ARGS_ID, -1);
+                removeVideo(id);
+            } else{
+                int pos = data.getIntExtra(DeleteDialog.ARGS_POS, -1);
+                mAdapter.notifyItemChanged(pos);
+            }
         }
     }
 
@@ -103,8 +139,8 @@ public class ListFragment extends Fragment {
         List<VideoItem> videos = mDataLab.getVideos();
         if(videos.size() > 0){
             for (int i = 0; i < videos.size(); i++){
-                Log.i("DEBUG", videos.get(i).getTitle());
-                Log.i("DEBUG", videos.get(i).getLink() + "   LINK");
+//                Log.i("DEBUG", videos.get(i).getTitle());
+//                Log.i("DEBUG", videos.get(i).getId() + "   ID");
                 checkVideoData(videos.get(i).getLink(), videos.get(i));
             }
         }
@@ -122,13 +158,18 @@ public class ListFragment extends Fragment {
         }
     }
 
+    private void removeVideo(long id){
+        mDataLab.removeVideo(id);
+        updateUI();
+    }
+
     private class VideoHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView mImageView;
         private TextView mTitleTextView;
         private TextView mLikesTextView;
         private TextView mGoalTextView;
-        private VideoItem mVideoItem;
+        public VideoItem mVideoItem;
 
         public VideoHolder(View itemView) {
             super(itemView);
@@ -167,6 +208,7 @@ public class ListFragment extends Fragment {
         @Override
         public void onBindViewHolder(VideoHolder holder, int position) {
             VideoItem video = mVideos.get(position);
+            holder.itemView.setTag(video.getId());
             holder.bindVideo(video);
         }
 
@@ -203,6 +245,12 @@ public class ListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(VideoItem videoItem) {
+
+            if(videoItem == null){
+                Toast.makeText(getActivity(), "Video was not found", Toast.LENGTH_LONG).show();
+                return;
+            }
+
             if(mItem == null){
                 mDataLab.addVideo(videoItem);
                 mAdapter.notifyItemInserted(mDataLab.getVideos().size() - 1);

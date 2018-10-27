@@ -56,6 +56,10 @@ public class DataLab {
         mDatabase.update(VideoEntry.TABLE_NAME, values, VideoEntry._ID + " = ?", new String[] {String.valueOf(id)});
     }
 
+    public void removeVideo(long id){
+        mDatabase.delete(VideoEntry.TABLE_NAME, VideoEntry._ID + "=" + id, null);
+    }
+
     private static ContentValues getContentValues(VideoItem video) {
         ContentValues values = new ContentValues();
         values.put(VideoEntry.COLUMN_LINK, video.getLink());
