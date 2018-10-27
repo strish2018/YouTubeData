@@ -16,12 +16,7 @@ import java.util.List;
 public class AsyncTest {
 
     public static final String API_KEY = "AIzaSyDNOu8gOihV-AHN28qniLqp7YQ9UTvoTz0";
-    String videoName = "Dread's+stream+|+Dota+2+-+Ogre+Magi+/+Undying+/+Naga+Siren+|+15.10.2018";
     String videoUrl = "https://www.youtube.com/watch?v=YHo8jMVvQVo&t=891s";
-
-    String querytest = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=8IISWHJNrl0&key=AIzaSyDNOu8gOihV-AHN28qniLqp7YQ9UTvoTz0";
-//    String query = "    https://www.googleapis.com/youtube/v3/search?part=snippet&q=%22="+videoName+"%22&type=video&key="+API_KEY;
-
 
     public byte[] getUrlBytes(String urlSpec) throws IOException {
         URL url = new URL(urlSpec);
@@ -77,12 +72,6 @@ public class AsyncTest {
         JSONArray items = jsonBody.getJSONArray("items");
         JSONObject statistics = items.getJSONObject(0).getJSONObject("statistics");
         item.setLikesCount(statistics.getInt("likeCount"));
-//        if (!videoJsonObject.has("url_s")) {
-//            continue;
-//        }
-//        item.setUrl(videoJsonObject.getString("url_s"));
-//        item.setOwner(videoJsonObject.getString("owner"));
-//        item.add(item);
     }
 
     private void parseItemTitle(VideoItem item, JSONObject jsonBody) throws IOException, JSONException {
