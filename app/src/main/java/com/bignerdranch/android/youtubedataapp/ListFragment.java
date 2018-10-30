@@ -190,6 +190,7 @@ public class ListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            VideoFragment.newInstance(mVideoItem.getId());
         }
     }
 

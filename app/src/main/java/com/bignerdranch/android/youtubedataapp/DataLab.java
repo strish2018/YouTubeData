@@ -45,6 +45,19 @@ public class DataLab {
         return videos;
     }
 
+    public VideoItem getVideoById(long id){
+        VideoCursorWrapper cursor = queryVideos(VideoEntry._ID + " = ?", new String[]{String.valueOf(id)});
+        try {
+            if (cursor.getCount() == 0) {
+                return null;
+            }
+            cursor.moveToFirst();
+            return cursor.getVideo();
+        } finally {
+            cursor.close();
+        }
+    }
+
     public void addVideo(VideoItem v) {
         ContentValues values = getContentValues(v);
         mDatabase.insert(VideoEntry.TABLE_NAME, null, values);
