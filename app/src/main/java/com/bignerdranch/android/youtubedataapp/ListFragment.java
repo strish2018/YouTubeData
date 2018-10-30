@@ -64,6 +64,8 @@ public class ListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        //PollService.setServiceAlarm(getActivity(), true);
+        AlarmReceiver.setAlarm(getActivity(), true);
     }
 
     @Override
@@ -269,7 +271,7 @@ public class ListFragment extends Fragment {
         @Override
         protected VideoItem doInBackground(Void... params) {
             try {
-                return new AsyncTest().getVideoByLink(mString);
+                return new YouTubeAsync().getVideoByLink(mString);
             } catch (IOException ioe) {
                 Log.e("DEBUG", "Failed to fetch items", ioe);
             }
