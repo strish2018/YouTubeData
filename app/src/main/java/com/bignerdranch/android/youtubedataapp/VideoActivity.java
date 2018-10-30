@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-public class VideoActivity extends AppCompatActivity {
+public class VideoActivity extends AppCompatActivity implements VideoFragment.Callbacks{
 
     private static final String EXTRA_VIDEO_ID = "video_id";
 
@@ -28,4 +28,8 @@ public class VideoActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, videoFragment).commit();
     }
 
+    @Override
+    public void onVideoItemUpdated(VideoItem videoItem) {
+
+    }
 }

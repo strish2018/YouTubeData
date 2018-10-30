@@ -1,6 +1,7 @@
 package com.bignerdranch.android.youtubedataapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -41,10 +42,34 @@ public class ListFragment extends Fragment {
         return  fragment;
     }
 
+    private Callbacks mCallbacks;
+
+    public interface Callbacks {
+        void onVideoSelected(VideoItem videoItem);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
     }
 
     @Nullable
@@ -147,7 +172,7 @@ public class ListFragment extends Fragment {
         }
     }
 
-    private void updateUI(){
+    public void updateUI(){
         List<VideoItem> videos = mDataLab.getVideos();
         if (mAdapter == null) {
             mAdapter = new VideoAdapter(videos);
@@ -186,11 +211,17 @@ public class ListFragment extends Fragment {
             Picasso.get().load(mVideoItem.getThumbnailUrl()).fit().centerCrop().into(mImageView);
             mTitleTextView.setText(mVideoItem.getTitle());
             mLikesTextView.setText("Likes count: " +String.valueOf(mVideoItem.getLikesCount()));
+            if (mVideoItem.getGoal() <= 0) {
+                mGoalTextView.setText(getResources().getString(R.string.goal_empty));
+            } else {
+                mGoalTextView.setText(getResources().getString(R.string.goal) + " " + mVideoItem.getGoal());
+            }
+
         }
 
         @Override
         public void onClick(View v) {
-            VideoFragment.newInstance(mVideoItem.getId());
+            mCallbacks.onVideoSelected(mVideoItem);
         }
     }
 
