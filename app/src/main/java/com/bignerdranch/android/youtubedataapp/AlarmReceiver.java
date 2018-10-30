@@ -15,7 +15,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())){
             AlarmReceiver.setAlarm(context, true);
         } else{
-            MyJobIntentService.enqueueWork(context, intent);
+            PollService.enqueueWork(context, intent);
         }
     }
     public static void cancelAlarm(Context context) {

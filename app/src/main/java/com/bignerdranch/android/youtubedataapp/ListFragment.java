@@ -64,7 +64,6 @@ public class ListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        //PollService.setServiceAlarm(getActivity(), true);
         AlarmReceiver.setAlarm(getActivity(), true);
     }
 
