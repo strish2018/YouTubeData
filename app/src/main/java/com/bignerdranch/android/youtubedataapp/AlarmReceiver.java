@@ -27,7 +27,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         cancelAlarm(context);
         AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         // EVERY X MINUTES
-        long delay = (1000 * 60 * 1);
+        long delay = (1000 * 60 * 15);
         long when = System.currentTimeMillis();
         if (!force) {
             when += delay;

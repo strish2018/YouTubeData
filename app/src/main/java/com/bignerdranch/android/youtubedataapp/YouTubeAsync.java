@@ -82,7 +82,7 @@ public class YouTubeAsync {
         JSONArray items = jsonBody.getJSONArray("items");
         JSONObject videoJsonObject = items.getJSONObject(0).getJSONObject("snippet");
         item.setTitle(videoJsonObject.getString("title"));
-        videoJsonObject = videoJsonObject.getJSONObject("thumbnails").getJSONObject("high");
+        videoJsonObject = videoJsonObject.getJSONObject("thumbnails").getJSONObject("standard");
         item.setThumbnailUrl(videoJsonObject.getString("url"));
 //        Log.i("DEBUG", item.getThumbnailUrl());
     }

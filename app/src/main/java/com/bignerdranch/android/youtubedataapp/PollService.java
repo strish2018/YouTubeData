@@ -24,12 +24,16 @@ public class PollService extends JobIntentService {
         /* your code here */
         /* reset the alarm */
         Log.i("DEBUG", "OnHandleIntent NetworkAvailableAndConnected " + isNetworkAvailableAndConnected());
+        updateVideos();
+        AlarmReceiver.setAlarm(getApplicationContext(),false);
+        stopSelf();
+    }
+
+    private void updateVideos(){
         if (isNetworkAvailableAndConnected()) {
             new YouTubeAsync().updateVideos(getApplicationContext());
             checkVideos(getApplicationContext());
         }
-        AlarmReceiver.setAlarm(getApplicationContext(),false);
-        stopSelf();
     }
 
     private void checkVideos(Context context){

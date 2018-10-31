@@ -67,7 +67,7 @@ public class VideoFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.video_item_fragment, container, false);
+        View v = inflater.inflate(R.layout.layout_masterdetail, container, false);
 
         mImageView = v.findViewById(R.id.image_view_item);
 
@@ -93,7 +93,7 @@ public class VideoFragment extends Fragment {
             }
         });
 
-        Picasso.get().load(mVideoItem.getThumbnailUrl()).fit().centerCrop().into(mImageView);
+        Picasso.get().load(mVideoItem.getThumbnailUrl()).into(mImageView);
         mTitleTextView.setText(mVideoItem.getTitle());
         mLikesTextView.setText(getResources().getString(R.string.currentLikesCount) + " " + mVideoItem.getLikesCount());
         updateGoal();

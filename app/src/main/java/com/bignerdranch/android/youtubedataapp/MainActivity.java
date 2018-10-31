@@ -2,6 +2,7 @@ package com.bignerdranch.android.youtubedataapp;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +15,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Call
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_masterdetail);
 
         listFragment = ListFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listFragment).commit();
@@ -22,8 +23,13 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Call
 
     @Override
     public void onVideoSelected(VideoItem videoItem) {
-        Intent i = VideoActivity.newIntent(this, videoItem.getId());
-        startActivity(i);
+        if (findViewById(R.id.detail_fragment_container) == null) {
+            Intent i = VideoActivity.newIntent(this, videoItem.getId());
+            startActivity(i);
+        } else {
+            Fragment newDetail = VideoFragment.newInstance(videoItem.getId());
+            getSupportFragmentManager().beginTransaction().replace(R.id.detail_fragment_container, newDetail).commit();
+        }
     }
 
     @Override
