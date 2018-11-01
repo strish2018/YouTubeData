@@ -180,7 +180,6 @@ public class ListFragment extends Fragment {
             mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setVideos(videos);
-//            mAdapter.notifyItemChanged(mSelectedCrimePosition);
             mAdapter.notifyDataSetChanged();
         }
     }

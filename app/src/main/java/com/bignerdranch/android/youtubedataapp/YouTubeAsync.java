@@ -1,6 +1,5 @@
 package com.bignerdranch.android.youtubedataapp;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
@@ -8,12 +7,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class YouTubeAsync {
 
@@ -21,29 +20,17 @@ public class YouTubeAsync {
     String videoUrl = "https://www.youtube.com/watch?v=YHo8jMVvQVo&t=891s";
     String video2 = "https://www.youtube.com/watch?v=HeZtOmiJGOQ";
 
-    public byte[] getUrlBytes(String urlSpec) throws IOException {
-        URL url = new URL(urlSpec);
-        HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            InputStream in = connection.getInputStream();
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                throw new IOException(connection.getResponseMessage() + ": with " + urlSpec);
-            }
-            int bytesRead = 0;
-            byte[] buffer = new byte[1024];
-            while ((bytesRead = in.read(buffer)) > 0) {
-                out.write(buffer, 0, bytesRead);
-            }
-            out.close();
-            return out.toByteArray();
-        } finally {
-            connection.disconnect();
-        }
-    }
-
     private String getUrlString(String urlSpec) throws IOException {
-        return new String(getUrlBytes(urlSpec));
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(urlSpec).build();
+        Response response = client.newCall(request).execute();
+        if(response.isSuccessful()){
+            return response.body().string();
+        }
+        else{
+            return "";
+        }
     }
 
     public VideoItem getVideoByLink(String s) throws IOException {
@@ -61,8 +48,6 @@ public class YouTubeAsync {
             e.printStackTrace();
             return null;
         }
-
-        //videoItem.setLikesCount(videoItem.getLikesCount() - 10);
 
         return videoItem;
     }
