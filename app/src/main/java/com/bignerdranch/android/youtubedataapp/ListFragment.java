@@ -22,6 +22,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bignerdranch.android.youtubedataapp.model.DataLab;
+import com.bignerdranch.android.youtubedataapp.video.VideoDialog;
+import com.bignerdranch.android.youtubedataapp.video.VideoItem;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;

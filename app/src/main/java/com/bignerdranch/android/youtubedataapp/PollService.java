@@ -8,6 +8,9 @@ import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.bignerdranch.android.youtubedataapp.model.DataLab;
+import com.bignerdranch.android.youtubedataapp.video.VideoItem;
+
 import java.util.List;
 
 public class PollService extends JobIntentService {

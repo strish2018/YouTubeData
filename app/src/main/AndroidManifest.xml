@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".VideoActivity"
+        <activity android:name=".video.VideoActivity"
             android:parentActivityName=".MainActivity"></activity>
         <service android:name=".PollService"
             android:permission="android.permission.BIND_JOB_SERVICE"

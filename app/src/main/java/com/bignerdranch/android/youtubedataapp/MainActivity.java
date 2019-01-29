@@ -1,12 +1,13 @@
 package com.bignerdranch.android.youtubedataapp;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import java.io.IOException;
+
+import com.bignerdranch.android.youtubedataapp.video.VideoActivity;
+import com.bignerdranch.android.youtubedataapp.video.VideoFragment;
+import com.bignerdranch.android.youtubedataapp.video.VideoItem;
 
 public class MainActivity extends AppCompatActivity implements ListFragment.Callbacks, VideoFragment.Callbacks {
 

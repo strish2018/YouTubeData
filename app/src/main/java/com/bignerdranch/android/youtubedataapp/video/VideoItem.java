@@ -1,4 +1,4 @@
-package com.bignerdranch.android.youtubedataapp;
+package com.bignerdranch.android.youtubedataapp.video;
 
 public class VideoItem {
 

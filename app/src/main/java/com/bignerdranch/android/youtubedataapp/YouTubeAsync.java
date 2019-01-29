@@ -1,7 +1,9 @@
 package com.bignerdranch.android.youtubedataapp;
 
 import android.content.Context;
-import android.util.Log;
+
+import com.bignerdranch.android.youtubedataapp.model.DataLab;
+import com.bignerdranch.android.youtubedataapp.video.VideoItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;

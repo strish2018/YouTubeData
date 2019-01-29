@@ -1,4 +1,4 @@
-package com.bignerdranch.android.youtubedataapp;
+package com.bignerdranch.android.youtubedataapp.video;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bignerdranch.android.youtubedataapp.R;
+import com.bignerdranch.android.youtubedataapp.model.DataLab;
 import com.squareup.picasso.Picasso;
 
 public class VideoFragment extends Fragment {

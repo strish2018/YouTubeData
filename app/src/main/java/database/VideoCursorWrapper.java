@@ -3,7 +3,7 @@ package database;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import com.bignerdranch.android.youtubedataapp.VideoItem;
+import com.bignerdranch.android.youtubedataapp.video.VideoItem;
 
 import database.VideoDbSchema.VideoEntry;
 

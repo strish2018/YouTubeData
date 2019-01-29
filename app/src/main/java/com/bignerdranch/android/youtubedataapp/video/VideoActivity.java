@@ -1,9 +1,11 @@
-package com.bignerdranch.android.youtubedataapp;
+package com.bignerdranch.android.youtubedataapp.video;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.bignerdranch.android.youtubedataapp.R;
 
 public class VideoActivity extends AppCompatActivity implements VideoFragment.Callbacks{
 
